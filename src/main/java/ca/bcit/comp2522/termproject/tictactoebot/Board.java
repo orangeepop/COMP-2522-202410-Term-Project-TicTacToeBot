@@ -7,12 +7,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
     private StackPane pane;
     private Display display;
+
+    private Computer computer;
 
     public ArrayList<ArrayList<Tile>> board;
 
@@ -36,9 +39,10 @@ public class Board {
         addAllTiles();
     }
 
-    public class Tile {
+    private class Tile {
         private StackPane pane;
         private Label label;
+        private Game.OOrX type;
 
         public Tile() {
             pane = new StackPane();
@@ -58,8 +62,11 @@ public class Board {
 
             pane.setOnMouseClicked(event -> {
                 if (label.getText().isEmpty() && !isEndOfGame) {
+                    type = playerTurn;
                     label.setText(getPlayerTurn());
                     changePlayerTurn();
+                    //check for winner
+                    // computer plays
                     checkForWinner();
                 }
             });
@@ -69,16 +76,79 @@ public class Board {
             return pane;
         }
 
-        public String getLabelValue() {
-            return label.getText();
-        }
-
         public void setValue(final String value) {
             label.setText(value);
         }
     }
 
+    public void startNewGame() {
+        this.isEndOfGame = false;
+        this.playerTurn = Game.OOrX.X;
+        for (ArrayList<Tile> row : this.board) {
+            for (Tile tile : row) {
+                tile.setValue("");
+                tile.type = null;
+            }
+        }
+    }
+
     private void checkForWinner() {
+        calculateRows();
+        calculateColumns();
+        calculateDiagonal();
+        calculateStalemate();
+    }
+
+    private void calculateRows() {
+        if (!this.isEndOfGame) {
+            for (ArrayList<Tile> row : this.board) {
+                if ((row.get(0).type == row.get(1).type && row.get(1).type == row.get(2).type && row.get(1).type != null)) {
+                    display.updateMessage(row.getFirst().type + " wins!");
+                    this.isEndOfGame = true;
+                    display.showStartButton();
+                }
+            }
+        }
+    }
+
+    private void calculateColumns() {
+        if (!this.isEndOfGame) {
+            for (int i = 0; i < 3; i++) {
+                if (this.board.get(0).get(i).type == this.board.get(1).get(i).type && this.board.get(1).get(i).type == this.board.get(2).get(i).type
+                        && this.board.get(1).get(i).type != null) {
+                    display.updateMessage(this.board.get(1).get(i).type + " wins!");
+                    this.isEndOfGame = true;
+                    display.showStartButton();
+                }
+            }
+        }
+    }
+
+    private void calculateDiagonal() {
+        if (!this.isEndOfGame) {
+            boolean firstDiagonal = this.board.get(0).get(0).type == this.board.get(1).get(1).type && this.board.get(1).get(1).type == this.board.get(2).get(2).type;
+            boolean secondDiagonal = this.board.get(0).get(2).type == this.board.get(1).get(1).type && this.board.get(1).get(1).type == this.board.get(2).get(0).type;
+            if ((firstDiagonal || secondDiagonal) && this.board.get(1).get(1).type != null) {
+                display.updateMessage(this.board.get(1).get(1).type + " wins!");
+                this.isEndOfGame = true;
+                display.showStartButton();
+            }
+        }
+    }
+
+    private void calculateStalemate() {
+        if (!this.isEndOfGame) {
+            for (ArrayList<Tile> row : board) {
+                for (Tile tile : row) {
+                    if (tile.type == null) {
+                        return;
+                    }
+                }
+            }
+            this.isEndOfGame = true;
+            display.updateMessage("Stalemate...");
+            display.showStartButton();
+        }
     }
 
 
@@ -110,6 +180,10 @@ public class Board {
 
     public StackPane getStackPane() {
         return pane;
+    }
+
+    public boolean isEndOfGame() {
+        return isEndOfGame;
     }
 
     public Tile checkCoordinates(final int[] coordinates) {
