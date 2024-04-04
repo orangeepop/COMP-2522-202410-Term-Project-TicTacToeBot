@@ -1,7 +1,9 @@
 package ca.bcit.comp2522.termproject.tictactoebot;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -20,7 +22,7 @@ public class Board {
     public ArrayList<ArrayList<Tile>> board;
 
     private Game.OOrX playerTurn = Game.OOrX.X;
-    private boolean isEndOfGame = false;
+    private boolean isEndOfGame = true;
 
     public Board(final Display display) {
         this.display = display;
@@ -60,16 +62,18 @@ public class Board {
             label.setFont(Font.font(24));
             pane.getChildren().add(label);
 
-            pane.setOnMouseClicked(event -> {
-                if (label.getText().isEmpty() && !isEndOfGame) {
-                    type = playerTurn;
-                    label.setText(getPlayerTurn());
-                    changePlayerTurn();
-                    //check for winner
-                    // computer plays
-                    checkForWinner();
-                }
-            });
+            pane.setOnMouseClicked(mouseEvent -> play());
+        }
+
+        public void play() {
+            if (label.getText().isEmpty() && !isEndOfGame) {
+                type = playerTurn;
+                label.setText(getPlayerTurn());
+                changePlayerTurn();
+                //check for winner
+                // computer plays
+                checkForWinner();
+            }
         }
 
         public StackPane getPane() {
