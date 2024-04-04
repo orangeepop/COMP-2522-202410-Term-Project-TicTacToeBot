@@ -44,6 +44,9 @@ public class Main extends Application {
             display.hideStartButton();
             display.updateMessage("X's turn to play");
             System.out.println("Game is starting!");
+            if (this.board.isEndOfGame()) {
+                this.board.startNewGame();
+            }
         };
     }
 
