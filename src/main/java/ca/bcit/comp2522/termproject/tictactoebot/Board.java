@@ -1,32 +1,16 @@
 package ca.bcit.comp2522.termproject.tictactoebot;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Board {
-    private StackPane pane;
-    private Display display;
-
-    private Computer computer;
-
+    private final StackPane pane;
+    private final Display display;
+    private Tile.OOrX playerTurn = Tile.OOrX.X;
     public ArrayList<ArrayList<Tile>> board;
-
-    private Game.OOrX playerTurn = Game.OOrX.X;
-    private boolean isEndOfGame = true;
+    public boolean isEndOfGame = true;
 
     public Board(final Display display) {
-        this.computer = new Computer(this);
         this.display = display;
         pane = new StackPane();
         pane.setMinSize(UIConstants.APP_WIDTH, UIConstants.TILE_BOARD_HEIGHT);
@@ -43,77 +27,76 @@ public class Board {
         addAllTiles();
     }
 
-    public class Tile {
-        private StackPane pane;
-        private Label label;
-        private Game.OOrX type;
-
-        public Tile() {
-            pane = new StackPane();
-            pane.setMinSize(100, 100);
-
-            Rectangle border = new Rectangle();
-            border.setHeight(100);
-            border.setWidth(100);
-            border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.BLACK);
-            pane.getChildren().add(border);
-
-            label = new Label("");
-            label.setAlignment(Pos.CENTER);
-            label.setFont(Font.font(24));
-            pane.getChildren().add(label);
-
-            pane.setOnMouseClicked(mouseEvent -> play());
-        }
-
-        public void play() {
-            if (label.getText().isEmpty() && !isEndOfGame) {
-                type = playerTurn;
-                label.setText(getPlayerTurn());
-                changePlayerTurn();
-                checkForWinner();
-                // computer plays
-                if (!isEndOfGame) {
-                    List<Integer> computerMove = Computer.minmax(Board.this);
-                    System.out.println(computerMove);
-                    Board.this.board.get(computerMove.get(0)).get(computerMove.get(1)).playComputer();
-                    checkForWinner();
-                }
-            }
-        }
-
-        private void playComputer() {
-            this.type = Game.OOrX.O;
-            label.setText("O");
-            changePlayerTurn();
-        }
-
-        public StackPane getPane() {
-            return pane;
-        }
-
-        public Game.OOrX getType() {
-            return type;
-        }
-
-        public void setValue(final String value) {
-            label.setText(value);
-        }
-    }
+//    public class Tile {
+//        private StackPane pane;
+//        private Label label;
+//        private Tile.OOrX type;
+//
+//        public Tile() {
+//            pane = new StackPane();
+//            pane.setMinSize(100, 100);
+//
+//            Rectangle border = new Rectangle();
+//            border.setHeight(100);
+//            border.setWidth(100);
+//            border.setFill(Color.TRANSPARENT);
+//            border.setStroke(Color.BLACK);
+//            pane.getChildren().add(border);
+//
+//            label = new Label("");
+//            label.setAlignment(Pos.CENTER);
+//            label.setFont(Font.font(24));
+//            pane.getChildren().add(label);
+//
+//            pane.setOnMouseClicked(mouseEvent -> play());
+//        }
+//
+//        public void play() {
+//            if (label.getText().isEmpty() && !isEndOfGame) {
+//                setTile();
+//                checkForWinner();
+//
+//                // computer plays
+//                if (!isEndOfGame) {
+//                    List<Integer> computerMove = Computer.minmax(Board.this);
+//                    Board.this.board.get(computerMove.get(0)).get(computerMove.get(1)).setTile();
+//                    checkForWinner();
+//                }
+//            }
+//        }
+//
+//        private void setTile() {
+//            this.type = playerTurn;
+//            label.setText(getPlayerTurn());
+//            changePlayerTurn();
+//        }
+//
+//        public StackPane getPane() {
+//            return pane;
+//        }
+//
+//        public Tile.OOrX getType() {
+//            return type;
+//        }
+//
+//        public void setValue(final String value) {
+//            label.setText(value);
+//        }
+//    }
 
     public void startNewGame() {
         this.isEndOfGame = false;
-        this.playerTurn = Game.OOrX.X;
+        this.playerTurn = Tile.OOrX.X;
         for (ArrayList<Tile> row : this.board) {
             for (Tile tile : row) {
                 tile.setValue("");
-                tile.type = null;
+                tile.setType(null);
+//                tile.type = null;
             }
         }
     }
 
-    private void checkForWinner() {
+    public void checkForWinner() {
         calculateRows();
         calculateColumns();
         calculateDiagonal();
@@ -123,8 +106,8 @@ public class Board {
     private void calculateRows() {
         if (!this.isEndOfGame) {
             for (ArrayList<Tile> row : this.board) {
-                if ((row.get(0).type == row.get(1).type && row.get(1).type == row.get(2).type && row.get(1).type != null)) {
-                    display.updateMessage(row.getFirst().type + " wins!");
+                if ((row.get(0).getType() == row.get(1).getType() && row.get(1).getType() == row.get(2).getType() && row.get(1).getType() != null)) {
+                    display.updateMessage(row.getFirst().getType() + " wins!");
                     this.isEndOfGame = true;
                     display.showStartButton();
                 }
@@ -135,9 +118,9 @@ public class Board {
     private void calculateColumns() {
         if (!this.isEndOfGame) {
             for (int i = 0; i < 3; i++) {
-                if (this.board.get(0).get(i).type == this.board.get(1).get(i).type && this.board.get(1).get(i).type == this.board.get(2).get(i).type
-                        && this.board.get(1).get(i).type != null) {
-                    display.updateMessage(this.board.get(1).get(i).type + " wins!");
+                if (this.board.get(0).get(i).getType() == this.board.get(1).get(i).getType() && this.board.get(1).get(i).getType() == this.board.get(2).get(i).getType()
+                        && this.board.get(1).get(i).getType() != null) {
+                    display.updateMessage(this.board.get(1).get(i).getType() + " wins!");
                     this.isEndOfGame = true;
                     display.showStartButton();
                 }
@@ -147,10 +130,10 @@ public class Board {
 
     private void calculateDiagonal() {
         if (!this.isEndOfGame) {
-            boolean firstDiagonal = this.board.get(0).get(0).type == this.board.get(1).get(1).type && this.board.get(1).get(1).type == this.board.get(2).get(2).type;
-            boolean secondDiagonal = this.board.get(0).get(2).type == this.board.get(1).get(1).type && this.board.get(1).get(1).type == this.board.get(2).get(0).type;
-            if ((firstDiagonal || secondDiagonal) && this.board.get(1).get(1).type != null) {
-                display.updateMessage(this.board.get(1).get(1).type + " wins!");
+            boolean firstDiagonal = this.board.get(0).get(0).getType() == this.board.get(1).get(1).getType() && this.board.get(1).get(1).getType() == this.board.get(2).get(2).getType();
+            boolean secondDiagonal = this.board.get(0).get(2).getType() == this.board.get(1).get(1).getType() && this.board.get(1).get(1).getType() == this.board.get(2).get(0).getType();
+            if ((firstDiagonal || secondDiagonal) && this.board.get(1).get(1).getType() != null) {
+                display.updateMessage(this.board.get(1).get(1).getType() + " wins!");
                 this.isEndOfGame = true;
                 display.showStartButton();
             }
@@ -161,7 +144,7 @@ public class Board {
         if (!this.isEndOfGame) {
             for (ArrayList<Tile> row : board) {
                 for (Tile tile : row) {
-                    if (tile.type == null) {
+                    if (tile.getType() == null) {
                         return;
                     }
                 }
@@ -174,22 +157,22 @@ public class Board {
 
 
     public void changePlayerTurn() {
-        if (this.playerTurn == Game.OOrX.X) {
-            this.playerTurn = Game.OOrX.O;
+        if (this.playerTurn == Tile.OOrX.X) {
+            this.playerTurn = Tile.OOrX.O;
         } else {
-            this.playerTurn = Game.OOrX.X;
+            this.playerTurn = Tile.OOrX.X;
         }
         display.updateMessage("Player " + this.playerTurn.name() + "'s turn");
     }
 
-    public String getPlayerTurn() {
-        return playerTurn.name();
+    public Tile.OOrX getPlayerTurn() {
+        return playerTurn;
     }
 
     private void addAllTiles() {
         for (int row = 0; row < 3; row ++) {
             for (int col = 0; col < 3; col ++) {
-                Tile tile = new Tile();
+                Tile tile = new Tile(this);
                 tile.getPane().setTranslateX((col * 100) - 100);
                 tile.getPane().setTranslateY((row * 100) - 100);
                 pane.getChildren().add(tile.getPane());
@@ -207,30 +190,10 @@ public class Board {
         return isEndOfGame;
     }
 
-    public Tile checkCoordinates(final int[] coordinates) {
-        return this.board.get(coordinates[0]).get(coordinates[1]);
-    }
-//    public boolean setTile(final int[] coordinates, final Game.OOrX tile) {
-//        if (checkCoordinates(coordinates) == null) {
-//            this.board.get(coordinates[0]).set(coordinates[1], tile);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     @Override
     public String toString() {
         return "Board{" +
                 "board=" + board +
                 '}';
-    }
-
-    public static void main(final String args[]) {
-//        Board board = new Board();
-//        System.out.println(board);
-////        board.O.makeMove([0, 0]);
-////        board.board[0][0] = Game.OOrX.O;
-//        System.out.println(board);
     }
 }
