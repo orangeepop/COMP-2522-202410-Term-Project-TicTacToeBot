@@ -5,21 +5,18 @@ import java.util.*;
 import static java.util.Arrays.copyOf;
 
 public class Computer {
-    private Board board;
 
-    public Computer(final Board board) {
-        this.board = board;
+    public Computer() {
     }
 
-    //translate Board to int[][] board
     private static int[][] copyBoard(final Board board) {
         int[][] newBoard = new int[3][3];
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
                 int num;
-                if (board.board.get(x).get(y).getType() == Game.OOrX.O) {
+                if (board.board.get(x).get(y).getType() == Tile.OOrX.O) {
                     num = 0;
-                } else if (board.board.get(x).get(y).getType() == Game.OOrX.X) {
+                } else if (board.board.get(x).get(y).getType() == Tile.OOrX.X) {
                     num = 1;
                 } else {
                     num = -1;
@@ -30,7 +27,7 @@ public class Computer {
         return newBoard;
     }
 
-    public static List<Integer> minmax(final Board board) {
+    public static List<Integer> minmax(final Board board) throws NoSuchElementException {
         //hashmap: {coordinate: score}
         HashMap<List<Integer>, Integer> scores = new HashMap<>();
 
@@ -58,20 +55,15 @@ public class Computer {
                 }
             }
         }
-        System.out.println(scores);
-        //List<Integer> highest = scores.entrySet().iterator().next().getKey();
-        //        //loop through scores to find highest one
-//        for (Map.Entry<List<Integer>, Integer> entry : scores.entrySet()) {
-//            List<Integer> coordinates = entry.getKey();
-//            Integer score = entry.getValue();
-//            if (score > scores.get(highest)) {
-//                highest = coordinates;
-//            }
-//        }
-        return scores.entrySet().stream()
-                .max(Comparator.comparingInt(Map.Entry::getValue))
-                .get()
-                .getKey();
+        List<Integer> highest = scores.entrySet().iterator().next().getKey();
+        for (Map.Entry<List<Integer>, Integer> entry : scores.entrySet()) {
+            List<Integer> coordinates = entry.getKey();
+            Integer score = entry.getValue();
+            if (score > scores.get(highest)) {
+                highest = coordinates;
+            }
+        }
+        return highest;
     }
 
     private static int playDFS(final int[][] board, final int i, final int j, final int side, final int depth, int score) {
@@ -167,9 +159,4 @@ public class Computer {
         }
         return 0;
     }
-
-//    public static void main(String[] args) {
-//        int[][] board = {{1, 0, -1}, {1, -1, -1}, {-1, -1, -1}};
-//        System.out.println(minmax(board));
-//    }
 }
