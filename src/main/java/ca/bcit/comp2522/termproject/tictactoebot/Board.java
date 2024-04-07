@@ -12,6 +12,7 @@ import javafx.scene.text.Font;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
     private StackPane pane;
@@ -25,6 +26,7 @@ public class Board {
     private boolean isEndOfGame = true;
 
     public Board(final Display display) {
+        this.computer = new Computer(this);
         this.display = display;
         pane = new StackPane();
         pane.setMinSize(UIConstants.APP_WIDTH, UIConstants.TILE_BOARD_HEIGHT);
@@ -41,7 +43,7 @@ public class Board {
         addAllTiles();
     }
 
-    private class Tile {
+    public class Tile {
         private StackPane pane;
         private Label label;
         private Game.OOrX type;
@@ -70,14 +72,29 @@ public class Board {
                 type = playerTurn;
                 label.setText(getPlayerTurn());
                 changePlayerTurn();
-                //check for winner
-                // computer plays
                 checkForWinner();
+                // computer plays
+                if (!isEndOfGame) {
+                    List<Integer> computerMove = Computer.minmax(Board.this);
+                    System.out.println(computerMove);
+                    Board.this.board.get(computerMove.get(0)).get(computerMove.get(1)).playComputer();
+                    checkForWinner();
+                }
             }
+        }
+
+        private void playComputer() {
+            this.type = Game.OOrX.O;
+            label.setText("O");
+            changePlayerTurn();
         }
 
         public StackPane getPane() {
             return pane;
+        }
+
+        public Game.OOrX getType() {
+            return type;
         }
 
         public void setValue(final String value) {
