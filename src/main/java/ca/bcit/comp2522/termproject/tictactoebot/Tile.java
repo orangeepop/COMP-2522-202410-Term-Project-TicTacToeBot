@@ -44,12 +44,12 @@ public final class Tile {
     }
 
     public void play() {
-        if (label.getText().isEmpty() && !board.isEndOfGame) {
+        if (label.getText().isEmpty() && !board.isEndOfGame()) {
             setTile();
             board.checkForWinner();
 
             // computer plays
-            if (!board.isEndOfGame) {
+            if (!board.isEndOfGame()) {
                 List<Integer> computerMove = Computer.minmax(this.board);
                 this.board.board.get(computerMove.get(0)).get(computerMove.get(1)).setTile();
                 board.checkForWinner();
@@ -71,7 +71,7 @@ public final class Tile {
         return type;
     }
 
-    public void setValue(final String value) {
+    public void setLabel(final String value) {
         label.setText(value);
     }
 
@@ -80,34 +80,42 @@ public final class Tile {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Tile tile = (Tile) o;
 
-        if (!board.equals(tile.board)) return false;
-        if (!getPane().equals(tile.getPane())) return false;
-        if (!label.equals(tile.label)) return false;
+        if (!board.equals(tile.board)) {
+            return false;
+        }
+        if (!getPane().equals(tile.getPane())) {
+            return false;
+        }
+        if (!label.equals(tile.label)) {
+            return false;
+        }
         return getType() == tile.getType();
     }
 
     @Override
     public int hashCode() {
         int result = board.hashCode();
-        result = 31 * result + getPane().hashCode();
-        result = 31 * result + label.hashCode();
-        result = 31 * result + getType().hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + getPane().hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + label.hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + getType().hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return "Tile{" +
-                "board=" + board +
-                ", pane=" + pane +
-                ", label=" + label +
-                ", type=" + type +
-                '}';
+        return "Tile{" + "board=" + board
+                + ", pane=" + pane
+                + ", label=" + label
+                + ", type=" + type + '}';
     }
 }
