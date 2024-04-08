@@ -8,27 +8,34 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
-public class Display {
-    private StackPane pane;
-    private Label message;
-    private Button startGameButton;
+public final class Display {
+    private final StackPane pane;
+    private final Label message;
+    private final Button startGameButton;
 
     public Display() {
         pane = new StackPane();
-        pane.setMinSize(UIConstants.APP_WIDTH, UIConstants.INFO_DISPLAY_HEIGHT);
-        pane.setTranslateX(UIConstants.APP_WIDTH / 2);
-        pane.setTranslateY(UIConstants.INFO_DISPLAY_HEIGHT / 2);
-
         message = new Label("Tic Tac Toe");
-        message.setMinSize(UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
-        message.setFont(Font.font(24));
-        message.setAlignment(Pos.CENTER);
-        message.setTranslateY(-20);
-        pane.getChildren().add(message);
-
         startGameButton = new Button("Start New Game");
-        startGameButton.setMinSize(135, 30);
-        startGameButton.setTranslateY(20);
+        initializeStackPane();
+        initializeLabel();
+        initializeStartButton();
+    }
+    private void initializeStackPane() {
+        pane.setMinSize(UIConstants.APP_WIDTH, UIConstants.INFO_DISPLAY_HEIGHT);
+        pane.setTranslateX(UIConstants.X_CENTER);
+        pane.setTranslateY(UIConstants.INFO_DISPLAY_TEXT_HEIGHT);
+    }
+    private void initializeLabel() {
+        message.setMinSize(UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
+        message.setFont(Font.font(UIConstants.FONT_SIZE));
+        message.setAlignment(Pos.CENTER);
+        message.setTranslateY(UIConstants.INFO_DISPLAY_LABEL_Y);
+        pane.getChildren().add(message);
+    }
+    private void initializeStartButton() {
+        startGameButton.setMinSize(UIConstants.START_BUTTON_WIDTH, UIConstants.START_BUTTON_HEIGHT);
+        startGameButton.setTranslateY(UIConstants.START_BUTTON_POSITION);
         pane.getChildren().add(startGameButton);
     }
 
@@ -36,8 +43,8 @@ public class Display {
         return this.pane;
     }
 
-    public void updateMessage(final String message) {
-        this.message.setText(message);
+    public void updateMessage(final String newMessage) {
+        this.message.setText(newMessage);
     }
 
     public void showStartButton() {
@@ -48,7 +55,40 @@ public class Display {
         startGameButton.setVisible(false);
     }
 
-    public void setStartGameButtonOnAction(EventHandler<ActionEvent> onAction) {
+    public void setStartGameButtonOnAction(final EventHandler<ActionEvent> onAction) {
         startGameButton.setOnAction(onAction);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Display display = (Display) o;
+
+        if (!pane.equals(display.pane)) {
+            return false;
+        }
+        if (!message.equals(display.message)) {
+            return false;
+        }
+        return startGameButton.equals(display.startGameButton);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = pane.hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + message.hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + startGameButton.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Display{" + "pane=" + pane + ", message=" + message + ", startGameButton=" + startGameButton + '}';
     }
 }
