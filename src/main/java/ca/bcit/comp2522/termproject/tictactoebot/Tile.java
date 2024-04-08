@@ -9,7 +9,7 @@ import javafx.scene.text.Font;
 
 import java.util.List;
 
-public class Tile {
+public final class Tile {
     private final Board board;
     private final StackPane pane;
     private final Label label;
@@ -21,21 +21,26 @@ public class Tile {
     public Tile(final Board board) {
         this.board = board;
         pane = new StackPane();
-        pane.setMinSize(100, 100);
+        label = new Label("");
+        initializeStackPane();
+        initializeLabel();
+    }
 
+    private void initializeStackPane() {
+        pane.setMinSize(UIConstants.TILE_HEIGHT, UIConstants.TILE_HEIGHT);
         Rectangle border = new Rectangle();
-        border.setHeight(100);
-        border.setWidth(100);
+        border.setHeight(UIConstants.TILE_HEIGHT);
+        border.setWidth(UIConstants.TILE_HEIGHT);
         border.setFill(Color.TRANSPARENT);
         border.setStroke(Color.BLACK);
         pane.getChildren().add(border);
-
-        label = new Label("");
-        label.setAlignment(Pos.CENTER);
-        label.setFont(Font.font(24));
-        pane.getChildren().add(label);
-
         pane.setOnMouseClicked(mouseEvent -> play());
+    }
+
+    private void initializeLabel() {
+        label.setAlignment(Pos.CENTER);
+        label.setFont(Font.font(UIConstants.FONT_SIZE));
+        pane.getChildren().add(label);
     }
 
     public void play() {
@@ -70,7 +75,39 @@ public class Tile {
         label.setText(value);
     }
 
-    public void setType(Tile.OOrX type) {
+    public void setType(final Tile.OOrX type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tile tile = (Tile) o;
+
+        if (!board.equals(tile.board)) return false;
+        if (!getPane().equals(tile.getPane())) return false;
+        if (!label.equals(tile.label)) return false;
+        return getType() == tile.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = board.hashCode();
+        result = 31 * result + getPane().hashCode();
+        result = 31 * result + label.hashCode();
+        result = 31 * result + getType().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "board=" + board +
+                ", pane=" + pane +
+                ", label=" + label +
+                ", type=" + type +
+                '}';
     }
 }
