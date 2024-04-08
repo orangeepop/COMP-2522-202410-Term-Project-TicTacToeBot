@@ -137,6 +137,48 @@ public final class Board {
     }
 
     @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Board board1 = (Board) o;
+
+        if (isEndOfGame() != board1.isEndOfGame()) {
+            return false;
+        }
+        if (!board.equals(board1.board)) {
+            return false;
+        }
+        if (!pane.equals(board1.pane)) {
+            return false;
+        }
+        if (!display.equals(board1.display)) {
+            return false;
+        }
+        return getPlayerTurn() == board1.getPlayerTurn();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = board.hashCode();
+        int isEndOfGameToInt;
+        if (isEndOfGame()) {
+            isEndOfGameToInt = 1;
+        } else {
+            isEndOfGameToInt = 0;
+        }
+        result = UIConstants.HASHCODE_CONSTANT * result + isEndOfGameToInt;
+        result = UIConstants.HASHCODE_CONSTANT * result + pane.hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + display.hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + getPlayerTurn().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Board{" + "board=" + board + '}';
     }
