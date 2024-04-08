@@ -7,15 +7,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
-public class Main extends Application {
+public final class Main extends Application {
 
     private Display display;
     private Board board;
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(final Stage primaryStage) {
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
         initializeLayout(root);
@@ -23,17 +21,17 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void initializeLayout(BorderPane root) {
-        initInfoDisplay(root);
-        initTileBoard(root);
+    private void initializeLayout(final BorderPane root) {
+        initializeInfoDisplay(root);
+        initializeTileBoard(root);
     }
 
-    private void initTileBoard(BorderPane root) {
+    private void initializeTileBoard(final BorderPane root) {
         board = new Board(display);
         root.getChildren().add(board.getStackPane());
     }
 
-    private void initInfoDisplay(BorderPane root) {
+    private void initializeInfoDisplay(final BorderPane root) {
         this.display = new Display();
         display.setStartGameButtonOnAction(startNewGame());
         root.getChildren().add(display.getStackPane());
