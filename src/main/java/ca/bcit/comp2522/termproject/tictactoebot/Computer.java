@@ -1,39 +1,24 @@
 package ca.bcit.comp2522.termproject.tictactoebot;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Arrays;
 
-import static java.util.Arrays.copyOf;
-
-public class Computer {
-
-    public Computer() {
+public final class Computer {
+    public static final int SIZE = 3;
+    private static final int MAX_SCORE = 10;
+    private static final int MIN_SCORE = -10;
+    private Computer() {
     }
-
-    private static int[][] copyBoard(final Board board) {
-        int[][] newBoard = new int[3][3];
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                int num;
-                if (board.board.get(x).get(y).getType() == Tile.OOrX.O) {
-                    num = 0;
-                } else if (board.board.get(x).get(y).getType() == Tile.OOrX.X) {
-                    num = 1;
-                } else {
-                    num = -1;
-                }
-                newBoard[x][y] = num;
-            }
-        }
-        return newBoard;
-    }
-
-    public static List<Integer> minmax(final Board board) throws NoSuchElementException {
+    public static List<Integer> minmax(final Board board) {
         //hashmap: {coordinate: score}
         HashMap<List<Integer>, Integer> scores = new HashMap<>();
 
         //loop through board to find null
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j ++) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
 //                if (board[i][j] == -1) {
 //                    int[][] newBoard = new int[3][3];
 //                    newBoard[0] = Arrays.copyOf(board[0], 3);
@@ -51,7 +36,7 @@ public class Computer {
                     List<Integer> coordinates = new ArrayList<>();
                     coordinates.add(i);
                     coordinates.add(j);
-                    scores.put(coordinates, playDFS(newBoard, i, j, 0, 0, 10));
+                    scores.put(coordinates, playDFS(newBoard, i, j, 0, 0, MAX_SCORE));
                 }
             }
         }
@@ -65,8 +50,8 @@ public class Computer {
         }
         return highest;
     }
-
-    private static int playDFS(final int[][] board, final int i, final int j, final int side, final int depth, int score) {
+    private static int playDFS(final int[][] board, final int i, final int j, final int side,
+                               final int depth, final int score) {
         // play [i, j]
         board[i][j] = side;
 
@@ -77,27 +62,44 @@ public class Computer {
         }
 
         //if X just played and no win, O to play next
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
+        int newScore = score;
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
                 if (board[x][y] == -1) {
-                    int[][] newBoard = new int[3][3];
-                    newBoard[0] = Arrays.copyOf(board[0], 3);
-                    newBoard[1] = Arrays.copyOf(board[1], 3);
-                    newBoard[2] = Arrays.copyOf(board[2], 3);
+                    int[][] newBoard = new int[SIZE][SIZE];
+                    newBoard[0] = Arrays.copyOf(board[0], SIZE);
+                    newBoard[1] = Arrays.copyOf(board[1], SIZE);
+                    newBoard[2] = Arrays.copyOf(board[2], SIZE);
                     if (side == 1) {
                         // if X just played and no win, O to play next
-                        score = Math.max(score, playDFS(newBoard, x, y, 0, depth + 1, 10));
+                        newScore = Math.max(newScore, playDFS(newBoard, x, y, 0, depth + 1, MAX_SCORE));
                     } else {
                         // if O just played and no win, X to play next
-                        score = Math.min(score, playDFS(newBoard, x, y, 1, depth + 1, -10));
+                        newScore = Math.min(newScore, playDFS(newBoard, x, y, 1, depth + 1, MIN_SCORE));
                     }
                 }
             }
         }
-        return score;
+        return newScore;
     }
-
-    private static int calculateWin(int[][] board, final int depth) {
+    private static int[][] copyBoard(final Board board) {
+        int[][] newBoard = new int[SIZE][SIZE];
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                int num;
+                if (board.board.get(x).get(y).getType() == Tile.OOrX.O) {
+                    num = 0;
+                } else if (board.board.get(x).get(y).getType() == Tile.OOrX.X) {
+                    num = 1;
+                } else {
+                    num = -1;
+                }
+                newBoard[x][y] = num;
+            }
+        }
+        return newBoard;
+    }
+    private static int calculateWin(final int[][] board, final int depth) {
         int row = calculateScore(calculateRow(board), depth);
         if (row != 0) {
             return row;
@@ -113,17 +115,15 @@ public class Computer {
         return calculateStalemate(board);
         //returns 0 if stalemate, -1 if no stalemate
     }
-
     private static int calculateScore(final int side, final int depth) {
         if (side == 0) {
-            return 10 - depth;
+            return MAX_SCORE - depth;
         } else if (side == 1) {
-            return depth - 10;
+            return depth - MAX_SCORE;
         } else {
             return 0;
         }
     }
-
     private static int calculateRow(final int[][] board) {
         for (int[] row: board) {
             if (row[0] == row[1] && row[1] == row[2] && row[1] != -1) {
@@ -132,26 +132,25 @@ public class Computer {
         }
         return -1;
     }
-
     private static int calculateColumn(final int[][] board) {
-        for (int i = 0; i < 3; i ++) {
+        for (int i = 0; i < SIZE; i++) {
             if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[1][i] != -1) {
                 return board[1][i];
             }
         }
         return -1;
     }
-
     private static int calculateDiagonal(final int[][] board) {
-        if (board[1][1] != -1 && ((board[0][0] == board[1][1] && board[1][1] == board[2][2]) || (board[2][0] == board[1][1] && board[1][1] == board[0][2]))) {
+        if (board[1][1] != -1 && ((board[0][0] == board[1][1]
+                && board[1][1] == board[2][2]) || (board[2][0] == board[1][1]
+                && board[1][1] == board[0][2]))) {
             return board[1][1];
         }
         return -1;
     }
-
     private static int calculateStalemate(final int[][] board) {
         for (int[] row: board) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < SIZE; i++) {
                 if (row[i] == -1) {
                     return -1;
                 }
