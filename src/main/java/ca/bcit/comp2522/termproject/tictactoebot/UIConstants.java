@@ -1,6 +1,6 @@
 package ca.bcit.comp2522.termproject.tictactoebot;
 
-public class UIConstants {
+public final class UIConstants {
     public static final int APP_WIDTH = 300;
     public static final int APP_HEIGHT = 400;
     public static final int INFO_DISPLAY_HEIGHT = 100;
@@ -16,4 +16,6 @@ public class UIConstants {
     public static final int START_BUTTON_HEIGHT = 30;
     public static final int START_BUTTON_WIDTH = 135;
     public static final int START_BUTTON_POSITION = 20;
+    private UIConstants() {
+    }
 }
