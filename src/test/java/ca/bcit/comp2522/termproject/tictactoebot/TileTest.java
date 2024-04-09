@@ -8,7 +8,6 @@ import javafx.application.Platform;
 
 class TileTest {
     private Tile tile;
-    private Board board;
 
     @BeforeAll
     static void initJfxRuntime() {
