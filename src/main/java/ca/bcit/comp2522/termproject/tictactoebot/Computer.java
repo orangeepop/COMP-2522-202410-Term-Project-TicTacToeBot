@@ -6,40 +6,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
 
+/**
+ * An unbeatable Tic Tac Toe computer containing the mixmax algorithm.
+ *
+ * @author Alice Huang
+ * @version 2024
+ */
 public final class Computer {
-    public static final int SIZE = 3;
+    private static final int SIZE = 3;
     private static final int MAX_SCORE = 10;
     private static final int MIN_SCORE = -10;
     private Computer() {
     }
+
+    /**
+     * The mixmax algorithm that calculates the best move for the computer to make on the current board.
+     * @param board a Board representing the current state of the board
+     * @return the coordinates for the computer to make as a List of Integer
+     */
     public static List<Integer> minmax(final Board board) {
         //hashmap: {coordinate: score}
         HashMap<List<Integer>, Integer> scores = new HashMap<>();
 
-        //loop through board to find null
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-//                if (board[i][j] == -1) {
-//                    int[][] newBoard = new int[3][3];
-//                    newBoard[0] = Arrays.copyOf(board[0], 3);
-//                    newBoard[1] = Arrays.copyOf(board[1], 3);
-//                    newBoard[2] = Arrays.copyOf(board[2], 3);
-//                    List<Integer> coordinates = new ArrayList<>();
-//                    coordinates.add(i);
-//                    coordinates.add(j);
-//                    scores.put(coordinates, playDFS(newBoard, i, j, 0, 0, 10));
-//                }
-
-                if (board.board.get(i).get(j).getType() == null) {
-                    // make new simplified board
+        //loops through board to find null, and makes a copy of the current board to start recursion
+        for (int row = 0; row < SIZE; row++) {
+            for (int column = 0; column < SIZE; column++) {
+                if (board.board.get(row).get(column).getType() == null) {
+                    // copy board as a 2D array of int where 0 represents O, 1 represents X, and -1 represents null
                     int[][] newBoard = copyBoard(board);
                     List<Integer> coordinates = new ArrayList<>();
-                    coordinates.add(i);
-                    coordinates.add(j);
-                    scores.put(coordinates, playDFS(newBoard, i, j, 0, 0, MAX_SCORE));
+                    coordinates.add(row);
+                    coordinates.add(column);
+                    //calls recursive method playDFS
+                    scores.put(coordinates, playDFS(newBoard, row, column, 0, 0, MAX_SCORE));
                 }
             }
         }
+
+        //iterates through the scores hashmap to find the coordinates with the highest possible score
         List<Integer> highest = scores.entrySet().iterator().next().getKey();
         for (Map.Entry<List<Integer>, Integer> entry : scores.entrySet()) {
             List<Integer> coordinates = entry.getKey();
@@ -50,10 +54,10 @@ public final class Computer {
         }
         return highest;
     }
-    private static int playDFS(final int[][] board, final int i, final int j, final int side,
+    private static int playDFS(final int[][] board, final int row, final int column, final int symbol,
                                final int depth, final int score) {
-        // play [i, j]
-        board[i][j] = side;
+        // play at [row, column]
+        board[row][column] = symbol;
 
         //base case
         int win = calculateWin(board, depth);
@@ -66,15 +70,16 @@ public final class Computer {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 if (board[x][y] == -1) {
+                    // copy current board to pass to recursive call to playDFS
                     int[][] newBoard = new int[SIZE][SIZE];
                     newBoard[0] = Arrays.copyOf(board[0], SIZE);
                     newBoard[1] = Arrays.copyOf(board[1], SIZE);
                     newBoard[2] = Arrays.copyOf(board[2], SIZE);
-                    if (side == 1) {
-                        // if X just played and no win, O to play next
+                    if (symbol == 1) {
+                        // if X just played and no win, O to play next through recursive call to playDFS
                         newScore = Math.max(newScore, playDFS(newBoard, x, y, 0, depth + 1, MAX_SCORE));
                     } else {
-                        // if O just played and no win, X to play next
+                        // if O just played and no win, X to play next through recursive call to playDFS
                         newScore = Math.min(newScore, playDFS(newBoard, x, y, 1, depth + 1, MIN_SCORE));
                     }
                 }
@@ -112,15 +117,18 @@ public final class Computer {
         if (diagonal != 0) {
             return diagonal;
         }
+        //returns 0 if stalemated, -1 if game has not reached end game state
         return calculateStalemate(board);
-        //returns 0 if stalemate, -1 if no stalemate
     }
     private static int calculateScore(final int side, final int depth) {
         if (side == 0) {
+            // if O wins, maximize score
             return MAX_SCORE - depth;
         } else if (side == 1) {
+            // if X wins, minimize score
             return depth - MAX_SCORE;
         } else {
+            // if no win, return 0
             return 0;
         }
     }
