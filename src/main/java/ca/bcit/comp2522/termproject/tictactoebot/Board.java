@@ -2,9 +2,10 @@ package ca.bcit.comp2522.termproject.tictactoebot;
 
 import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class Board {
-    public final ArrayList<ArrayList<Tile>> board;
+    public final List<List<Tile>> board;
     private boolean isEndOfGame = true;
     private final StackPane pane;
     private final Display display;
@@ -38,7 +39,7 @@ public final class Board {
     public void startNewGame() {
         setEndOfGame(false);
         this.playerTurn = Tile.OOrX.X;
-        for (ArrayList<Tile> row : this.board) {
+        for (List<Tile> row : this.board) {
             for (Tile tile : row) {
                 tile.setLabel("");
                 tile.setType(null);
@@ -61,7 +62,7 @@ public final class Board {
 
     private void calculateRows() {
         if (!this.isEndOfGame) {
-            for (ArrayList<Tile> row : this.board) {
+            for (List<Tile> row : this.board) {
                 if ((row.get(0).getType() == row.get(1).getType()
                         && row.get(1).getType() == row.get(2).getType()
                         && row.get(1).getType() != null)) {
@@ -97,7 +98,7 @@ public final class Board {
 
     private void calculateStalemate() {
         if (!this.isEndOfGame) {
-            for (ArrayList<Tile> row : board) {
+            for (List<Tile> row : board) {
                 for (Tile tile : row) {
                     if (tile.getType() == null) {
                         return;
