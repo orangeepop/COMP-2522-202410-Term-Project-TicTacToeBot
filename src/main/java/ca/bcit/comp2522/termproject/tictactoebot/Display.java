@@ -8,11 +8,20 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
+/**
+ * Models a display panel for game state.
+ *
+ * @author Alice Huang
+ * @version 2024
+ */
 public final class Display {
     private final StackPane pane;
     private final Label message;
     private final Button startGameButton;
 
+    /**
+     * Constructs a display panel.
+     */
     public Display() {
         pane = new StackPane();
         message = new Label("Tic Tac Toe");
@@ -39,36 +48,59 @@ public final class Display {
         pane.getChildren().add(startGameButton);
     }
 
+    /**
+     * Returns the pane.
+     * @return pane as a StackPane
+     */
     public StackPane getStackPane() {
         return this.pane;
     }
 
+    /**
+     * Updates the message displayed.
+     * @param newMessage a String containing the new message to be displayed
+     */
     public void updateMessage(final String newMessage) {
         this.message.setText(newMessage);
     }
 
+    /**
+     * Shows the start button.
+     */
     public void showStartButton() {
         startGameButton.setVisible(true);
     }
 
+    /**
+     * Hides the start button.
+     */
     public void hideStartButton() {
         startGameButton.setVisible(false);
     }
 
+    /**
+     * Defines what happens when start button is clicked.
+     * @param onAction the action to perform when start button is clicked
+     */
     public void setStartGameButtonOnAction(final EventHandler<ActionEvent> onAction) {
         startGameButton.setOnAction(onAction);
     }
 
+    /**
+     * Evaluates whether two Display objects are equivalent.
+     * @param obj The object to compare to
+     * @return a boolean representing equality
+     */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        Display display = (Display) o;
+        Display display = (Display) obj;
 
         if (!pane.equals(display.pane)) {
             return false;
@@ -79,6 +111,10 @@ public final class Display {
         return startGameButton.equals(display.startGameButton);
     }
 
+    /**
+     * Generates the hashcode for display.
+     * @return an int representing the hashcode
+     */
     @Override
     public int hashCode() {
         int result = pane.hashCode();
@@ -87,6 +123,10 @@ public final class Display {
         return result;
     }
 
+    /**
+     * Generates a string representation of the display.
+     * @return a String representing the state of display
+     */
     @Override
     public String toString() {
         return "Display{" + "pane=" + pane + ", message=" + message + ", startGameButton=" + startGameButton + '}';
