@@ -29,10 +29,4 @@ class TileTest {
         tile.setType(Tile.OOrX.O);
         assertSame(tile.getType(), Tile.OOrX.O);
     }
-
-    @Test
-    void setTypeCorrectlySetsToX() {
-        tile.setType(Tile.OOrX.X);
-        assertSame(tile.getType(), Tile.OOrX.X);
-    }
 }

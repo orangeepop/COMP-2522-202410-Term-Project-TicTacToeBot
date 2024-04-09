@@ -42,7 +42,6 @@ public final class Board {
         for (List<Tile> row : this.board) {
             for (Tile tile : row) {
                 tile.setLabel("");
-                tile.setType(null);
             }
         }
     }

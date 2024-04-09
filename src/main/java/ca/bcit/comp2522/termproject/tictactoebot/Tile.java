@@ -75,10 +75,6 @@ public final class Tile {
         label.setText(value);
     }
 
-    public void setType(final Tile.OOrX type) {
-        this.type = type;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
