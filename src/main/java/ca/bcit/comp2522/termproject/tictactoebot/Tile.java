@@ -43,7 +43,7 @@ public final class Tile {
         pane.getChildren().add(label);
     }
 
-    public void play() {
+    private void play() {
         if (label.getText().isEmpty() && !board.isEndOfGame()) {
             setTile();
             board.checkForWinner();
