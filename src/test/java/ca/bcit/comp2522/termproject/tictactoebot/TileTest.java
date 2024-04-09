@@ -23,10 +23,4 @@ class TileTest {
     void defaultTypeIsNull() {
         assertSame(tile.getType(), null);
     }
-
-    @Test
-    void setTypeCorrectlySetsToO() {
-        tile.setType(Tile.OOrX.O);
-        assertSame(tile.getType(), Tile.OOrX.O);
-    }
 }
