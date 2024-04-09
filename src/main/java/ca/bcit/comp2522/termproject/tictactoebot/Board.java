@@ -19,13 +19,18 @@ public final class Board {
         pane.setTranslateX(UIConstants.X_CENTER);
         pane.setTranslateY(UIConstants.BOARD_Y_POSITION);
 
-        this.board = new ArrayList<>();
+        this.board = initializeBoard();
+    }
+
+    private List<List<Tile>> initializeBoard() {
+        List<List<Tile>> newBoard = new ArrayList<>();
         for (int row = 0; row < UIConstants.BOARD_DIMENSION; row++) {
-            this.board.add(new ArrayList<>());
+            newBoard.add(new ArrayList<>());
             for (int col = 0; col < UIConstants.BOARD_DIMENSION; col++) {
-                this.board.get(row).add(initializeTile(row, col));
+                newBoard.get(row).add(initializeTile(row, col));
             }
         }
+        return newBoard;
     }
 
     private Tile initializeTile(final int x, final int y) {
@@ -41,7 +46,7 @@ public final class Board {
         this.playerTurn = Tile.OOrX.X;
         for (List<Tile> row : this.board) {
             for (Tile tile : row) {
-                tile.setLabel("");
+                tile.resetTile();
             }
         }
     }

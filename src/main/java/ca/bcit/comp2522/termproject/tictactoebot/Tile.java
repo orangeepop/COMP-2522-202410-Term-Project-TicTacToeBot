@@ -63,6 +63,10 @@ public final class Tile {
         board.changePlayerTurn();
     }
 
+    private void resetType() {
+        this.type = null;
+    }
+
     public StackPane getPane() {
         return pane;
     }
@@ -73,6 +77,11 @@ public final class Tile {
 
     public void setLabel(final String value) {
         label.setText(value);
+    }
+
+    public void resetTile() {
+        setLabel("");
+        resetType();
     }
 
     @Override
