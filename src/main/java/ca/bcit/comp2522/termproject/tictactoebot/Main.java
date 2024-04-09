@@ -7,11 +7,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Entry point to the Tic Tac Toe game.
+ *
+ * @author Alice Huang
+ * @version 2024
+ */
 public final class Main extends Application {
 
     private Display display;
     private Board board;
 
+    /**
+     * Creates and displays a JavaFX window.
+     * @param primaryStage the scene
+     */
     @Override
     public void start(final Stage primaryStage) {
         BorderPane root = new BorderPane();
@@ -48,6 +58,10 @@ public final class Main extends Application {
         };
     }
 
+    /**
+     * Drives the program.
+     * @param args command line arguments
+     */
     public static void main(final String[] args) {
         launch(args);
     }
