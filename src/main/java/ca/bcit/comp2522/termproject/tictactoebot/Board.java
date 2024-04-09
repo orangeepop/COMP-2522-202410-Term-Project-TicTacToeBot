@@ -4,13 +4,26 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Models a board for a Tic Tac Toe game.
+ *
+ * @author Alice Huang
+ * @version 2024
+ */
 public final class Board {
+    /**
+     * A nested List of Tiles that represents the dimensions of a board.
+     */
     public final List<List<Tile>> board;
     private boolean isEndOfGame = true;
     private final StackPane pane;
     private final Display display;
     private Tile.OOrX playerTurn = Tile.OOrX.X;
 
+    /**
+     * Constructs a board.
+     * @param display UI display
+     */
     public Board(final Display display) {
         this.display = display;
 
@@ -41,6 +54,9 @@ public final class Board {
         return tile;
     }
 
+    /**
+     * Starts a new game.
+     */
     public void startNewGame() {
         setEndOfGame(false);
         this.playerTurn = Tile.OOrX.X;
@@ -51,6 +67,9 @@ public final class Board {
         }
     }
 
+    /**
+     * Checks for a winner in the current game.
+     */
     public void checkForWinner() {
         calculateRows();
         calculateColumns();
@@ -115,8 +134,10 @@ public final class Board {
         }
     }
 
-
-    void changePlayerTurn() {
+    /**
+     * Switches the turn of the current player.
+     */
+    public void changePlayerTurn() {
         if (this.playerTurn == Tile.OOrX.X) {
             this.playerTurn = Tile.OOrX.O;
         } else {
@@ -125,32 +146,53 @@ public final class Board {
         display.updateMessage("Player " + this.playerTurn.name() + "'s turn");
     }
 
+    /**
+     * Gets the player on the current turn.
+     * @return playerTurn as an enum Tile.OOrX
+     */
     public Tile.OOrX getPlayerTurn() {
         return playerTurn;
     }
 
+    /**
+     * Gets the stackpane for the board.
+     * @return pane as a StackPane
+     */
     public StackPane getStackPane() {
         return pane;
     }
 
+    /**
+     * Gets whether a game is inactive on this board.
+     * @return isEndOfGame as a boolean
+     */
     public boolean isEndOfGame() {
         return isEndOfGame;
     }
 
+    /**
+     * Starts or ends the game on this board.
+     * @param endOfGame a boolean representing the new state of the game
+     */
     public void setEndOfGame(final boolean endOfGame) {
         this.isEndOfGame = endOfGame;
     }
 
+    /**
+     * Evaluates whether two boards are equivalent.
+     * @param obj the object to compare current board to
+     * @return a boolean representing equality
+     */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        Board board1 = (Board) o;
+        Board board1 = (Board) obj;
 
         if (isEndOfGame() != board1.isEndOfGame()) {
             return false;
@@ -167,6 +209,10 @@ public final class Board {
         return getPlayerTurn() == board1.getPlayerTurn();
     }
 
+    /**
+     * Generates the hashcode for a board.
+     * @return an int representing the hashcode
+     */
     @Override
     public int hashCode() {
         int result = board.hashCode();
@@ -183,8 +229,14 @@ public final class Board {
         return result;
     }
 
+    /**
+     * Generates a string representation of the board.
+     * @return a string describing the board.
+     */
     @Override
     public String toString() {
-        return "Board{" + "board=" + board + '}';
+        return "Board{" + "board=" + board.toString()
+                + ", game ended: " + isEndOfGame()
+                + ", player " + getPlayerTurn().name() + "'s turn." + '}';
     }
 }
