@@ -41,24 +41,24 @@ public final class Tile implements UserInterface {
     }
     @Override
     public StackPane initializeStackPane() {
-        StackPane pane = new StackPane();
-        pane.setMinSize(UIConstants.TILE_HEIGHT, UIConstants.TILE_HEIGHT);
+        StackPane newPane = new StackPane();
+        newPane.setMinSize(UIConstants.TILE_HEIGHT, UIConstants.TILE_HEIGHT);
         Rectangle border = new Rectangle();
         border.setHeight(UIConstants.TILE_HEIGHT);
         border.setWidth(UIConstants.TILE_HEIGHT);
         border.setFill(Color.TRANSPARENT);
         border.setStroke(Color.BLACK);
-        pane.getChildren().add(border);
-        pane.setOnMouseClicked(mouseEvent -> play());
-        return pane;
+        newPane.getChildren().add(border);
+        newPane.setOnMouseClicked(mouseEvent -> play());
+        return newPane;
     }
     @Override
     public Label initializeLabel() {
-        Label label = new Label("");
-        label.setAlignment(Pos.CENTER);
-        label.setFont(Font.font(UIConstants.FONT_SIZE));
-        pane.getChildren().add(label);
-        return label;
+        Label newLabel = new Label("");
+        newLabel.setAlignment(Pos.CENTER);
+        newLabel.setFont(Font.font(UIConstants.FONT_SIZE));
+        pane.getChildren().add(newLabel);
+        return newLabel;
     }
 
     private void play() {
