@@ -71,15 +71,18 @@ public final class Tile {
         }
     }
 
-    public void setTile(final OOrX shape) {
-        this.type = shape;
-        label.setText(shape.name());
-    }
-
     private void resetType() {
         this.type = null;
     }
 
+    /**
+     * Sets the player shape on the tile.
+     * @param shape the shape to set
+     */
+    public void setTile(final OOrX shape) {
+        this.type = shape;
+        label.setText(shape.name());
+    }
     /**
      * Returns the pane.
      * @return pane as a StackPane
