@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ca.bcit.comp2522.termproject.tictactoebot.Computer.*;
+import static ca.bcit.comp2522.termproject.tictactoebot.Calculation.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ComputerTest {
+class CalculationTest {
     private Board board;
 
     @BeforeAll

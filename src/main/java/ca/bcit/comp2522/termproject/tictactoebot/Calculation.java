@@ -12,11 +12,11 @@ import java.util.Arrays;
  * @author Alice Huang
  * @version 2024
  */
-public final class Computer {
+public final class Calculation {
     private static final int SIZE = 3;
     private static final int MAX_SCORE = 10;
     private static final int MIN_SCORE = -10;
-    private Computer() {
+    private Calculation() {
     }
 
     /**

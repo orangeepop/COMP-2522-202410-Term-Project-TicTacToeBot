@@ -4,10 +4,10 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ca.bcit.comp2522.termproject.tictactoebot.Computer.calculateColumn;
-import static ca.bcit.comp2522.termproject.tictactoebot.Computer.calculateRow;
-import static ca.bcit.comp2522.termproject.tictactoebot.Computer.calculateDiagonal;
-import static ca.bcit.comp2522.termproject.tictactoebot.Computer.calculateStalemate;
+import static ca.bcit.comp2522.termproject.tictactoebot.Calculation.calculateColumn;
+import static ca.bcit.comp2522.termproject.tictactoebot.Calculation.calculateRow;
+import static ca.bcit.comp2522.termproject.tictactoebot.Calculation.calculateDiagonal;
+import static ca.bcit.comp2522.termproject.tictactoebot.Calculation.calculateStalemate;
 
 /**
  * Models a board for a Tic Tac Toe game.

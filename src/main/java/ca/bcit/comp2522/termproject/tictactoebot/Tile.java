@@ -64,7 +64,7 @@ public final class Tile {
 
             // computer plays
             if (!board.isEndOfGame()) {
-                List<Integer> computerMove = Computer.minimax(this.board);
+                List<Integer> computerMove = Calculation.minimax(this.board);
                 this.board.board.get(computerMove.get(0)).get(computerMove.get(1)).setTile(OOrX.O);
                 board.checkForWinner();
             }
