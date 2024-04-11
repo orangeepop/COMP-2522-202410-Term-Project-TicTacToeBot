@@ -55,6 +55,11 @@ public final class Computer {
         return highest;
     }
 
+    /**
+     * Calculates whether there is a winning row on the board.
+     * @param board the board to calculate
+     * @return winner as Tile.OOrX
+     */
     public static Tile.OOrX calculateRow(final Board board) {
         if (!board.isEndOfGame()) {
             for (List<Tile> row : board.board) {
@@ -68,6 +73,11 @@ public final class Computer {
         return null;
     }
 
+    /**
+     * Calculates whether there is a winning column on the board.
+     * @param board the board to calculate
+     * @return winner as Tile.OOrX
+     */
     public static Tile.OOrX calculateColumn(final Board board) {
         if (!board.isEndOfGame()) {
             for (int i = 0; i < UIConstants.BOARD_DIMENSION; i++) {
@@ -81,6 +91,11 @@ public final class Computer {
         return null;
     }
 
+    /**
+     * Calculates whether there is a diagonal win on the board.
+     * @param board the board to calculate
+     * @return winner as Tile.OOrX
+     */
     public static Tile.OOrX calculateDiagonal(final Board board) {
         if (!board.isEndOfGame()) {
             boolean firstDiagonal = board.board.get(0).get(0).getType() == board.board.get(1).get(1).getType()
@@ -94,6 +109,11 @@ public final class Computer {
         return null;
     }
 
+    /**
+     * Determines whether the board has reached stalemate.
+     * @param board the board to examine
+     * @return stalemate state as a boolean
+     */
     public static boolean calculateStalemate(final Board board) {
         if (!board.isEndOfGame()) {
             for (List<Tile> row : board.board) {
