@@ -4,6 +4,8 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ca.bcit.comp2522.termproject.tictactoebot.Computer.*;
+
 /**
  * Models a board for a Tic Tac Toe game.
  *
@@ -18,7 +20,6 @@ public final class Board {
     private boolean isEndOfGame = true;
     private final StackPane pane;
     private final Display display;
-    private Tile.OOrX playerTurn = Tile.OOrX.X;
 
     /**
      * Constructs a board.
@@ -59,7 +60,6 @@ public final class Board {
      */
     public void startNewGame() {
         setEndOfGame(false);
-        this.playerTurn = Tile.OOrX.X;
         for (List<Tile> row : this.board) {
             for (Tile tile : row) {
                 tile.resetTile();
@@ -71,87 +71,28 @@ public final class Board {
      * Checks for a winner in the current game.
      */
     public void checkForWinner() {
-        calculateRows();
-        calculateColumns();
-        calculateDiagonal();
-        calculateStalemate();
+        endGame(calculateRow(this));
+        endGame(calculateColumn(this));
+        endGame(calculateDiagonal(this));
+        endGame(calculateStalemate(this));
     }
 
     private void endGame(final Tile.OOrX player) {
+        if (player == null) {
+            return;
+        }
+        System.out.println("ksanf");
         display.updateMessage(player + " wins!");
         setEndOfGame(true);
         display.showStartButton();
     }
 
-    private void calculateRows() {
-        if (!this.isEndOfGame) {
-            for (List<Tile> row : this.board) {
-                if ((row.get(0).getType() == row.get(1).getType()
-                        && row.get(1).getType() == row.get(2).getType()
-                        && row.get(1).getType() != null)) {
-                    endGame(row.getFirst().getType());
-                }
-            }
-        }
-    }
-
-    private void calculateColumns() {
-        if (!this.isEndOfGame) {
-            for (int i = 0; i < UIConstants.BOARD_DIMENSION; i++) {
-                if (this.board.get(0).get(i).getType() == this.board.get(1).get(i).getType()
-                        && this.board.get(1).get(i).getType() == this.board.get(2).get(i).getType()
-                        && this.board.get(1).get(i).getType() != null) {
-                    endGame(this.board.get(1).get(i).getType());
-                }
-            }
-        }
-    }
-
-    private void calculateDiagonal() {
-        if (!this.isEndOfGame) {
-            boolean firstDiagonal = this.board.get(0).get(0).getType() == this.board.get(1).get(1).getType()
-                    && this.board.get(1).get(1).getType() == this.board.get(2).get(2).getType();
-            boolean secondDiagonal = this.board.get(0).get(2).getType() == this.board.get(1).get(1).getType()
-                    && this.board.get(1).get(1).getType() == this.board.get(2).get(0).getType();
-            if ((firstDiagonal || secondDiagonal) && this.board.get(1).get(1).getType() != null) {
-                endGame(this.board.get(1).get(1).getType());
-            }
-        }
-    }
-
-    private void calculateStalemate() {
-        if (!this.isEndOfGame) {
-            for (List<Tile> row : board) {
-                for (Tile tile : row) {
-                    if (tile.getType() == null) {
-                        return;
-                    }
-                }
-            }
-            this.isEndOfGame = true;
+    private void endGame(final boolean endGame) {
+        if (endGame) {
+            setEndOfGame(true);
             display.updateMessage("Stalemate...");
             display.showStartButton();
         }
-    }
-
-    /**
-     * Switches the turn of the current player.
-     */
-    public void changePlayerTurn() {
-        if (this.playerTurn == Tile.OOrX.X) {
-            this.playerTurn = Tile.OOrX.O;
-        } else {
-            this.playerTurn = Tile.OOrX.X;
-        }
-        display.updateMessage("Player " + this.playerTurn.name() + "'s turn");
-    }
-
-    /**
-     * Gets the player on the current turn.
-     * @return playerTurn as an enum Tile.OOrX
-     */
-    public Tile.OOrX getPlayerTurn() {
-        return playerTurn;
     }
 
     /**
@@ -203,10 +144,7 @@ public final class Board {
         if (!pane.equals(board1.pane)) {
             return false;
         }
-        if (!display.equals(board1.display)) {
-            return false;
-        }
-        return getPlayerTurn() == board1.getPlayerTurn();
+        return display.equals(board1.display);
     }
 
     /**
@@ -225,7 +163,6 @@ public final class Board {
         result = UIConstants.HASHCODE_CONSTANT * result + isEndOfGameToInt;
         result = UIConstants.HASHCODE_CONSTANT * result + pane.hashCode();
         result = UIConstants.HASHCODE_CONSTANT * result + display.hashCode();
-        result = UIConstants.HASHCODE_CONSTANT * result + getPlayerTurn().hashCode();
         return result;
     }
 
@@ -237,6 +174,6 @@ public final class Board {
     public String toString() {
         return "Board{" + "board=" + board.toString()
                 + ", game ended: " + isEndOfGame()
-                + ", player " + getPlayerTurn().name() + "'s turn." + '}';
+                + ", player " + '}';
     }
 }

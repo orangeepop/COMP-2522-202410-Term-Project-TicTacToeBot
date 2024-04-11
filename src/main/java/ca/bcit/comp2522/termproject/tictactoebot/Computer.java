@@ -20,11 +20,11 @@ public final class Computer {
     }
 
     /**
-     * The mixmax algorithm that calculates the best move for the computer to make on the current board.
+     * The minimax algorithm that calculates the best move for the computer to make on the current board.
      * @param board a Board representing the current state of the board
      * @return the coordinates for the computer to make as a List of Integer
      */
-    public static List<Integer> minmax(final Board board) {
+    public static List<Integer> minimax(final Board board) {
         //hashmap: {coordinate: score}
         HashMap<List<Integer>, Integer> scores = new HashMap<>();
 
@@ -54,6 +54,60 @@ public final class Computer {
         }
         return highest;
     }
+
+    public static Tile.OOrX calculateRow(final Board board) {
+        if (!board.isEndOfGame()) {
+            for (List<Tile> row : board.board) {
+                if ((row.get(0).getType() == row.get(1).getType()
+                        && row.get(1).getType() == row.get(2).getType()
+                        && row.get(1).getType() != null)) {
+                    return row.getFirst().getType();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Tile.OOrX calculateColumn(final Board board) {
+        if (!board.isEndOfGame()) {
+            for (int i = 0; i < UIConstants.BOARD_DIMENSION; i++) {
+                if (board.board.get(0).get(i).getType() == board.board.get(1).get(i).getType()
+                        && board.board.get(1).get(i).getType() == board.board.get(2).get(i).getType()
+                        && board.board.get(1).get(i).getType() != null) {
+                    return board.board.get(1).get(i).getType();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Tile.OOrX calculateDiagonal(final Board board) {
+        if (!board.isEndOfGame()) {
+            boolean firstDiagonal = board.board.get(0).get(0).getType() == board.board.get(1).get(1).getType()
+                    && board.board.get(1).get(1).getType() == board.board.get(2).get(2).getType();
+            boolean secondDiagonal = board.board.get(0).get(2).getType() == board.board.get(1).get(1).getType()
+                    && board.board.get(1).get(1).getType() == board.board.get(2).get(0).getType();
+            if ((firstDiagonal || secondDiagonal) && board.board.get(1).get(1).getType() != null) {
+                return board.board.get(1).get(1).getType();
+            }
+        }
+        return null;
+    }
+
+    public static boolean calculateStalemate(final Board board) {
+        if (!board.isEndOfGame()) {
+            for (List<Tile> row : board.board) {
+                for (Tile tile : row) {
+                    if (tile.getType() == null) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     private static int playDFS(final int[][] board, final int row, final int column, final int symbol,
                                final int depth, final int score) {
         // play at [row, column]
@@ -140,6 +194,7 @@ public final class Computer {
         }
         return -1;
     }
+
     private static int calculateColumn(final int[][] board) {
         for (int i = 0; i < SIZE; i++) {
             if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[1][i] != -1) {
