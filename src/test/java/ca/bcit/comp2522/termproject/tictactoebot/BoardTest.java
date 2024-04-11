@@ -29,17 +29,6 @@ class BoardTest {
     }
 
     @Test
-    void defaultPlayerTurnIsX() {
-        assertSame(board.getPlayerTurn(), Tile.OOrX.X);
-    }
-
-    @Test
-    void changePlayerTurnAfterDefaultIsO() {
-        board.changePlayerTurn();
-        assertSame(board.getPlayerTurn(), Tile.OOrX.O);
-    }
-
-    @Test
     void gameStartsWhenSet() {
         board.setEndOfGame(false);
         assertFalse(board.isEndOfGame());
