@@ -59,22 +59,21 @@ public final class Tile {
 
     private void play() {
         if (label.getText().isEmpty() && !board.isEndOfGame()) {
-            setTile();
+            setTile(OOrX.X);
             board.checkForWinner();
 
             // computer plays
             if (!board.isEndOfGame()) {
-                List<Integer> computerMove = Computer.minmax(this.board);
-                this.board.board.get(computerMove.get(0)).get(computerMove.get(1)).setTile();
+                List<Integer> computerMove = Computer.minimax(this.board);
+                this.board.board.get(computerMove.get(0)).get(computerMove.get(1)).setTile(OOrX.O);
                 board.checkForWinner();
             }
         }
     }
 
-    private void setTile() {
-        this.type = this.board.getPlayerTurn();
-        label.setText(this.board.getPlayerTurn().name());
-        board.changePlayerTurn();
+    public void setTile(final OOrX shape) {
+        this.type = shape;
+        label.setText(shape.name());
     }
 
     private void resetType() {
