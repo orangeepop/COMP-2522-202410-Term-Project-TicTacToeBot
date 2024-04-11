@@ -81,7 +81,6 @@ public final class Board {
         if (player == null) {
             return;
         }
-        System.out.println("ksanf");
         display.updateMessage(player + " wins!");
         setEndOfGame(true);
         display.showStartButton();
