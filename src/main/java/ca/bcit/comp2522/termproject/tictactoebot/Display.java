@@ -30,26 +30,33 @@ public final class Display implements UserInterface {
     }
     @Override
     public StackPane initializeStackPane() {
-        StackPane pane = new StackPane();
-        pane.setMinSize(UIConstants.APP_WIDTH, UIConstants.INFO_DISPLAY_HEIGHT);
-        pane.setTranslateX(UIConstants.X_CENTER);
-        pane.setTranslateY(UIConstants.INFO_DISPLAY_TEXT_HEIGHT);
-        return pane;
+        StackPane newPane = new StackPane();
+        newPane.setMinSize(UIConstants.APP_WIDTH, UIConstants.INFO_DISPLAY_HEIGHT);
+        newPane.setTranslateX(UIConstants.X_CENTER);
+        newPane.setTranslateY(UIConstants.INFO_DISPLAY_TEXT_HEIGHT);
+        return newPane;
     }
     @Override
     public Label initializeLabel() {
-        Label label = new Label("Tic Tac Toe");
-        label.setMinSize(UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
-        label.setFont(Font.font(UIConstants.FONT_SIZE));
-        label.setAlignment(Pos.CENTER);
-        label.setTranslateY(UIConstants.INFO_DISPLAY_LABEL_Y);
-        pane.getChildren().add(label);
-        return label;
+        Label newLabel = new Label("Tic Tac Toe");
+        newLabel.setMinSize(UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
+        newLabel.setFont(Font.font(UIConstants.FONT_SIZE));
+        newLabel.setAlignment(Pos.CENTER);
+        newLabel.setTranslateY(UIConstants.INFO_DISPLAY_LABEL_Y);
+        pane.getChildren().add(newLabel);
+        return newLabel;
     }
     private void initializeStartButton() {
         startGameButton.setMinSize(UIConstants.START_BUTTON_WIDTH, UIConstants.START_BUTTON_HEIGHT);
         startGameButton.setTranslateY(UIConstants.START_BUTTON_POSITION);
         pane.getChildren().add(startGameButton);
+    }
+    /**
+     * Gets the label.
+     * @return the label we wish to get as a Label
+     */
+    public Label getLabel() {
+        return this.label;
     }
 
     /**
@@ -81,10 +88,6 @@ public final class Display implements UserInterface {
      */
     public void setStartGameButtonOnAction(final EventHandler<ActionEvent> onAction) {
         startGameButton.setOnAction(onAction);
-    }
-
-    public Label getLabel() {
-        return this.label;
     }
 
     /**
