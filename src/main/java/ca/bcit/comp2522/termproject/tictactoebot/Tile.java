@@ -15,7 +15,7 @@ import java.util.List;
  * @author Alice Huang
  * @version 2024
  */
-public final class Tile {
+public final class Tile implements UserInterface {
     private final Board board;
     private final StackPane pane;
     private final Label label;
@@ -34,13 +34,14 @@ public final class Tile {
      */
     public Tile(final Board board) {
         this.board = board;
-        pane = new StackPane();
-        label = new Label("");
+        pane = initializeStackPane();
+        label = initializeLabel();
         initializeStackPane();
         initializeLabel();
     }
-
-    private void initializeStackPane() {
+    @Override
+    public StackPane initializeStackPane() {
+        StackPane pane = new StackPane();
         pane.setMinSize(UIConstants.TILE_HEIGHT, UIConstants.TILE_HEIGHT);
         Rectangle border = new Rectangle();
         border.setHeight(UIConstants.TILE_HEIGHT);
@@ -49,12 +50,15 @@ public final class Tile {
         border.setStroke(Color.BLACK);
         pane.getChildren().add(border);
         pane.setOnMouseClicked(mouseEvent -> play());
+        return pane;
     }
-
-    private void initializeLabel() {
+    @Override
+    public Label initializeLabel() {
+        Label label = new Label("");
         label.setAlignment(Pos.CENTER);
         label.setFont(Font.font(UIConstants.FONT_SIZE));
         pane.getChildren().add(label);
+        return label;
     }
 
     private void play() {
@@ -87,7 +91,8 @@ public final class Tile {
      * Returns the pane.
      * @return pane as a StackPane
      */
-    public StackPane getPane() {
+    @Override
+    public StackPane getStackPane() {
         return pane;
     }
 
@@ -99,19 +104,20 @@ public final class Tile {
         return type;
     }
 
-    /**
-     * Updates the display text of a tile.
-     * @param value display text as a String
-     */
-    public void setLabel(final String value) {
-        label.setText(value);
-    }
+//    /**
+//     * Updates the display text of a tile.
+//     * @param value display text as a String
+//     */
+//    @Override
+//    public void setLabel(final String value) {
+//        label.setText(value);
+//    }
 
     /**
      * Resets the tile.
      */
     public void resetTile() {
-        setLabel("");
+        setLabel("", this.label);
         resetType();
     }
 
@@ -134,7 +140,7 @@ public final class Tile {
         if (!board.equals(tile.board)) {
             return false;
         }
-        if (!getPane().equals(tile.getPane())) {
+        if (!getStackPane().equals(tile.getStackPane())) {
             return false;
         }
         if (!label.equals(tile.label)) {
@@ -150,7 +156,7 @@ public final class Tile {
     @Override
     public int hashCode() {
         int result = board.hashCode();
-        result = UIConstants.HASHCODE_CONSTANT * result + getPane().hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + getStackPane().hashCode();
         result = UIConstants.HASHCODE_CONSTANT * result + label.hashCode();
         result = UIConstants.HASHCODE_CONSTANT * result + getType().hashCode();
         return result;

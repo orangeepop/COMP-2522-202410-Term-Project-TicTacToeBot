@@ -50,7 +50,7 @@ public final class Main extends Application {
     private EventHandler<ActionEvent> startNewGame() {
         return actionEvent -> {
             display.hideStartButton();
-            display.updateMessage("X's turn to play");
+            display.setLabel("X's turn to play", display.getLabel());
             System.out.println("Game is starting!");
             if (this.board.isEndOfGame()) {
                 this.board.startNewGame();

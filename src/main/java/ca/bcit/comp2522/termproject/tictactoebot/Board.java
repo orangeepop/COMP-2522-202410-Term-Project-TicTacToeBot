@@ -52,9 +52,9 @@ public final class Board {
 
     private Tile initializeTile(final int x, final int y) {
         Tile tile = new Tile(this);
-        tile.getPane().setTranslateX((y * UIConstants.TILE_HEIGHT) - UIConstants.TILE_HEIGHT);
-        tile.getPane().setTranslateY((x * UIConstants.TILE_HEIGHT) - UIConstants.TILE_HEIGHT);
-        pane.getChildren().add(tile.getPane());
+        tile.getStackPane().setTranslateX((y * UIConstants.TILE_HEIGHT) - UIConstants.TILE_HEIGHT);
+        tile.getStackPane().setTranslateY((x * UIConstants.TILE_HEIGHT) - UIConstants.TILE_HEIGHT);
+        pane.getChildren().add(tile.getStackPane());
         return tile;
     }
 
@@ -84,7 +84,7 @@ public final class Board {
         if (player == null) {
             return;
         }
-        display.updateMessage(player + " wins!");
+        display.setLabel(player + " wins!", display.getLabel());
         setEndOfGame(true);
         display.showStartButton();
     }
@@ -92,7 +92,7 @@ public final class Board {
     private void endGame(final boolean endGame) {
         if (endGame) {
             setEndOfGame(true);
-            display.updateMessage("Stalemate...");
+            display.setLabel("Stalemate...", display.getLabel());
             display.showStartButton();
         }
     }

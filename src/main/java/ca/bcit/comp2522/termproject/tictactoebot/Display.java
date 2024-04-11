@@ -14,33 +14,37 @@ import javafx.scene.text.Font;
  * @author Alice Huang
  * @version 2024
  */
-public final class Display {
+public final class Display implements UserInterface {
     private final StackPane pane;
-    private final Label message;
+    private final Label label;
     private final Button startGameButton;
 
     /**
      * Constructs a display panel.
      */
     public Display() {
-        pane = new StackPane();
-        message = new Label("Tic Tac Toe");
+        pane = initializeStackPane();
+        label = initializeLabel();
         startGameButton = new Button("Start New Game");
-        initializeStackPane();
-        initializeLabel();
         initializeStartButton();
     }
-    private void initializeStackPane() {
+    @Override
+    public StackPane initializeStackPane() {
+        StackPane pane = new StackPane();
         pane.setMinSize(UIConstants.APP_WIDTH, UIConstants.INFO_DISPLAY_HEIGHT);
         pane.setTranslateX(UIConstants.X_CENTER);
         pane.setTranslateY(UIConstants.INFO_DISPLAY_TEXT_HEIGHT);
+        return pane;
     }
-    private void initializeLabel() {
-        message.setMinSize(UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
-        message.setFont(Font.font(UIConstants.FONT_SIZE));
-        message.setAlignment(Pos.CENTER);
-        message.setTranslateY(UIConstants.INFO_DISPLAY_LABEL_Y);
-        pane.getChildren().add(message);
+    @Override
+    public Label initializeLabel() {
+        Label label = new Label("Tic Tac Toe");
+        label.setMinSize(UIConstants.APP_WIDTH, UIConstants.APP_HEIGHT);
+        label.setFont(Font.font(UIConstants.FONT_SIZE));
+        label.setAlignment(Pos.CENTER);
+        label.setTranslateY(UIConstants.INFO_DISPLAY_LABEL_Y);
+        pane.getChildren().add(label);
+        return label;
     }
     private void initializeStartButton() {
         startGameButton.setMinSize(UIConstants.START_BUTTON_WIDTH, UIConstants.START_BUTTON_HEIGHT);
@@ -52,16 +56,9 @@ public final class Display {
      * Returns the pane.
      * @return pane as a StackPane
      */
+    @Override
     public StackPane getStackPane() {
         return this.pane;
-    }
-
-    /**
-     * Updates the message displayed.
-     * @param newMessage a String containing the new message to be displayed
-     */
-    public void updateMessage(final String newMessage) {
-        this.message.setText(newMessage);
     }
 
     /**
@@ -86,6 +83,10 @@ public final class Display {
         startGameButton.setOnAction(onAction);
     }
 
+    public Label getLabel() {
+        return this.label;
+    }
+
     /**
      * Evaluates whether two Display objects are equivalent.
      * @param obj The object to compare to
@@ -105,7 +106,7 @@ public final class Display {
         if (!pane.equals(display.pane)) {
             return false;
         }
-        if (!message.equals(display.message)) {
+        if (!label.equals(display.label)) {
             return false;
         }
         return startGameButton.equals(display.startGameButton);
@@ -118,7 +119,7 @@ public final class Display {
     @Override
     public int hashCode() {
         int result = pane.hashCode();
-        result = UIConstants.HASHCODE_CONSTANT * result + message.hashCode();
+        result = UIConstants.HASHCODE_CONSTANT * result + label.hashCode();
         result = UIConstants.HASHCODE_CONSTANT * result + startGameButton.hashCode();
         return result;
     }
@@ -129,6 +130,6 @@ public final class Display {
      */
     @Override
     public String toString() {
-        return "Display{" + "pane=" + pane + ", message=" + message + ", startGameButton=" + startGameButton + '}';
+        return "Display{" + "pane=" + pane + ", message=" + label + ", startGameButton=" + startGameButton + '}';
     }
 }
