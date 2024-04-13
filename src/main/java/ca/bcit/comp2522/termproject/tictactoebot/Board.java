@@ -58,6 +58,10 @@ public final class Board {
         return tile;
     }
 
+    /**
+     * Gets the board.
+     * @return board as a List<List<Tile>>
+     */
     public List<List<Tile>> getBoard() {
         return this.board;
     }

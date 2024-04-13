@@ -100,7 +100,8 @@ public final class Calculation {
         if (!board.isEndOfGame()) {
             boolean firstDiagonal = board.getBoard().get(0).get(0).getType() == board.getBoard().get(1).get(1).getType()
                     && board.getBoard().get(1).get(1).getType() == board.getBoard().get(2).get(2).getType();
-            boolean secondDiagonal = board.getBoard().get(0).get(2).getType() == board.getBoard().get(1).get(1).getType()
+            boolean secondDiagonal =
+                    board.getBoard().get(0).get(2).getType() == board.getBoard().get(1).get(1).getType()
                     && board.getBoard().get(1).get(1).getType() == board.getBoard().get(2).get(0).getType();
             if ((firstDiagonal || secondDiagonal) && board.getBoard().get(1).get(1).getType() != null) {
                 return board.getBoard().get(1).get(1).getType();
