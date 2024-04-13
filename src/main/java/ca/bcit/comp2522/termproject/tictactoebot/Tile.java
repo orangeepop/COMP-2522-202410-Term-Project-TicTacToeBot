@@ -104,15 +104,6 @@ public final class Tile implements UserInterface {
         return type;
     }
 
-//    /**
-//     * Updates the display text of a tile.
-//     * @param value display text as a String
-//     */
-//    @Override
-//    public void setLabel(final String value) {
-//        label.setText(value);
-//    }
-
     /**
      * Resets the tile.
      */
