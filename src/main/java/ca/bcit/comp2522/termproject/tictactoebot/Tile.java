@@ -69,7 +69,7 @@ public final class Tile implements UserInterface {
             // computer plays
             if (!board.isEndOfGame()) {
                 List<Integer> computerMove = Calculation.minimax(this.board);
-                this.board.board.get(computerMove.get(0)).get(computerMove.get(1)).setTile(OOrX.O);
+                this.board.getBoard().get(computerMove.get(0)).get(computerMove.get(1)).setTile(OOrX.O);
                 board.checkForWinner();
             }
         }

@@ -19,7 +19,7 @@ public final class Board {
     /**
      * A nested List of Tiles that represents the dimensions of a board.
      */
-    public final List<List<Tile>> board;
+    private final List<List<Tile>> board;
     private boolean isEndOfGame = true;
     private final StackPane pane;
     private final Display display;
@@ -56,6 +56,10 @@ public final class Board {
         tile.getStackPane().setTranslateY((x * UIConstants.TILE_HEIGHT) - UIConstants.TILE_HEIGHT);
         pane.getChildren().add(tile.getStackPane());
         return tile;
+    }
+
+    public List<List<Tile>> getBoard() {
+        return this.board;
     }
 
     /**

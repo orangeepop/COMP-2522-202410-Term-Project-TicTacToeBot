@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 /**
- * An unbeatable Tic Tac Toe computer containing the mixmax algorithm.
+ * Calculations for the minimax algorithm of an unbeatable Tic Tac Toe computer.
  *
  * @author Alice Huang
  * @version 2024
@@ -31,7 +31,7 @@ public final class Calculation {
         //loops through board to find null, and makes a copy of the current board to start recursion
         for (int row = 0; row < SIZE; row++) {
             for (int column = 0; column < SIZE; column++) {
-                if (board.board.get(row).get(column).getType() == null) {
+                if (board.getBoard().get(row).get(column).getType() == null) {
                     // copy board as a 2D array of int where 0 represents O, 1 represents X, and -1 represents null
                     int[][] newBoard = copyBoard(board);
                     List<Integer> coordinates = new ArrayList<>();
@@ -62,7 +62,7 @@ public final class Calculation {
      */
     public static Tile.OOrX calculateRow(final Board board) {
         if (!board.isEndOfGame()) {
-            for (List<Tile> row : board.board) {
+            for (List<Tile> row : board.getBoard()) {
                 if ((row.get(0).getType() == row.get(1).getType()
                         && row.get(1).getType() == row.get(2).getType()
                         && row.get(1).getType() != null)) {
@@ -81,10 +81,10 @@ public final class Calculation {
     public static Tile.OOrX calculateColumn(final Board board) {
         if (!board.isEndOfGame()) {
             for (int i = 0; i < UIConstants.BOARD_DIMENSION; i++) {
-                if (board.board.get(0).get(i).getType() == board.board.get(1).get(i).getType()
-                        && board.board.get(1).get(i).getType() == board.board.get(2).get(i).getType()
-                        && board.board.get(1).get(i).getType() != null) {
-                    return board.board.get(1).get(i).getType();
+                if (board.getBoard().get(0).get(i).getType() == board.getBoard().get(1).get(i).getType()
+                        && board.getBoard().get(1).get(i).getType() == board.getBoard().get(2).get(i).getType()
+                        && board.getBoard().get(1).get(i).getType() != null) {
+                    return board.getBoard().get(1).get(i).getType();
                 }
             }
         }
@@ -98,12 +98,12 @@ public final class Calculation {
      */
     public static Tile.OOrX calculateDiagonal(final Board board) {
         if (!board.isEndOfGame()) {
-            boolean firstDiagonal = board.board.get(0).get(0).getType() == board.board.get(1).get(1).getType()
-                    && board.board.get(1).get(1).getType() == board.board.get(2).get(2).getType();
-            boolean secondDiagonal = board.board.get(0).get(2).getType() == board.board.get(1).get(1).getType()
-                    && board.board.get(1).get(1).getType() == board.board.get(2).get(0).getType();
-            if ((firstDiagonal || secondDiagonal) && board.board.get(1).get(1).getType() != null) {
-                return board.board.get(1).get(1).getType();
+            boolean firstDiagonal = board.getBoard().get(0).get(0).getType() == board.getBoard().get(1).get(1).getType()
+                    && board.getBoard().get(1).get(1).getType() == board.getBoard().get(2).get(2).getType();
+            boolean secondDiagonal = board.getBoard().get(0).get(2).getType() == board.getBoard().get(1).get(1).getType()
+                    && board.getBoard().get(1).get(1).getType() == board.getBoard().get(2).get(0).getType();
+            if ((firstDiagonal || secondDiagonal) && board.getBoard().get(1).get(1).getType() != null) {
+                return board.getBoard().get(1).get(1).getType();
             }
         }
         return null;
@@ -116,7 +116,7 @@ public final class Calculation {
      */
     public static boolean calculateStalemate(final Board board) {
         if (!board.isEndOfGame()) {
-            for (List<Tile> row : board.board) {
+            for (List<Tile> row : board.getBoard()) {
                 for (Tile tile : row) {
                     if (tile.getType() == null) {
                         return false;
@@ -166,9 +166,9 @@ public final class Calculation {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 int num;
-                if (board.board.get(x).get(y).getType() == Tile.OOrX.O) {
+                if (board.getBoard().get(x).get(y).getType() == Tile.OOrX.O) {
                     num = 0;
-                } else if (board.board.get(x).get(y).getType() == Tile.OOrX.X) {
+                } else if (board.getBoard().get(x).get(y).getType() == Tile.OOrX.X) {
                     num = 1;
                 } else {
                     num = -1;
