@@ -1,11 +1,11 @@
 # Unbeatable Tic Tac Toe Bot
 
-By: Alice Huang
-A01372753
-
 ## About this game
 This is an implementation of a classic Tic Tac Toe game with an unbeatable bot. The GUI is made
-with JavaFX, and the minimax algorithm is used to calculate the bot's next move.
+with JavaFX, and the minimax algorithm is used to calculate the bot's next move. You, the player, plays as X while 
+the bot plays as O.
+
+![img.png](img.png)
 
 ## Minimax algorithm
 The [minimax](https://en.wikipedia.org/wiki/Minimax) algorithm calculates possible gains and losses for all cases
@@ -21,17 +21,8 @@ need to be considered. This algorithm assumes both players play perfectly, so a 
 This means the bot should always extend the game as long as possible as a perfect player. Therefore, the number of turns
 or depth of the game should be used to balance each version of the board that reaches end-game in the recursion. 
 
+![img_1.png](img_1.png)
+
 ### Limitations
 The perfect bot in this game is always the second player. Improvements could be made to the game to accommodate the bot
 being both first and second player.
-
-## Required elements
-| Element                  | File      | Line              |
-|--------------------------|-----------|-------------------|
-| Polymorphism (interface) | Tile.java | 42-54 | 
-| Enumeration              | Tile.java | 27-29 | 
-| Data structure           | Board.java | 22 | 
-| Abstraction              | UserInterface.java | 17 | 
-
-## Note
-Please run unit test classes individually instead of running the entire unit test folder. 
